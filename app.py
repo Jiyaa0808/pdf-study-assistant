@@ -18,7 +18,9 @@ if pdf:
     question = st.text_input("Ask something about the PDF:")
 
     if question:
-        context = "\n".join(search(question, db))
+        results = search(question, db)
+        # Limit context to 2000 characters to avoid token limit
+        context = "\n".join(results)[:2000]
 
         reply = groq.chat.completions.create(
             model="llama3-8b-8192",
