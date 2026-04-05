@@ -14,10 +14,15 @@ def split_into_chunks(text):
     return [" ".join(words[i:i+500]) for i in range(0, len(words), 450)]
 
 def create_vectorstore(chunks):
+    if not chunks:
+        return {"chunks": [], "embeddings": np.array([])}
     embeddings = model.encode(chunks)
     return {"chunks": chunks, "embeddings": embeddings}
 
 def search(query, db):
+    # Guard: empty or missing embeddings
+    if db is None or len(db["embeddings"]) == 0:
+        return []
     query_embedding = model.encode([query])
     scores = cosine_similarity(query_embedding, db["embeddings"])[0]
     top_indices = np.argsort(scores)[-3:][::-1]
