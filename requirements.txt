@@ -1,5 +1,6 @@
 streamlit
 pymupdf
-chromadb
 sentence-transformers
+scikit-learn
+numpy
 groq
